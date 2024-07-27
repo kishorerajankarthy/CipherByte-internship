@@ -1,0 +1,76 @@
+import random
+
+def generate_secret_code():
+    """Function to generate a random 4-digit secret code."""
+    return str(random.randint(1000, 9999))
+
+def get_feedback(secret_code, guess):
+    """Function to provide feedback on the guess."""
+    bulls = 0
+    cows = 0
+    for i in range(len(secret_code)):
+        if secret_code[i] == guess[i]:
+            bulls += 1
+        elif guess[i] in secret_code:
+            cows += 1
+    return bulls, cows
+
+def main():
+    print("Welcome to the Mastermind game!")
+    print("Player 1 will set the secret code, and Player 2 will guess.")
+
+    # Player 1 sets the secret code
+    secret_code = generate_secret_code()
+    print("Player 1's secret code is set.")
+
+    attempts_player1 = 0
+    attempts_player2 = 0
+
+    while True:
+        # Player 2 guesses the secret code
+        guess_player2 = input("Player 2, enter your guess (4-digit number): ")
+
+        # Validate the guess
+        if not guess_player2.isdigit() or len(guess_player2) != 4:
+            print("Invalid input. Please enter a 4-digit number.")
+            continue
+
+        attempts_player2 += 1
+
+        # Check if Player 2 guessed correctly
+        if guess_player2 == secret_code:
+            print(f"Player 2 guessed the secret code {secret_code} in {attempts_player2} attempts. Player 2 wins!")
+            break
+
+        # Provide feedback to Player 2
+        bulls, cows = get_feedback(secret_code, guess_player2)
+        print(f"Player 2's guess {guess_player2} has {bulls} bulls and {cows} cows.")
+
+    print("\nNow, Player 2 will set the secret code, and Player 1 will guess.")
+
+    # Player 2 sets the secret code
+    secret_code = generate_secret_code()
+    print("Player 2's secret code is set.")
+
+    while True:
+        # Player 1 guesses the secret code
+        guess_player1 = input("Player 1, enter your guess (4-digit number): ")
+
+        # Validate the guess
+        if not guess_player1.isdigit() or len(guess_player1) != 4:
+            print("Invalid input. Please enter a 4-digit number.")
+            continue
+
+        attempts_player1 += 1
+
+        # Check if Player 1 guessed correctly
+        if guess_player1 == secret_code:
+            print(f"Player 1 guessed the secret code {secret_code} in {attempts_player1} attempts. Player 1 wins!")
+            break
+
+        # Provide feedback to Player 1
+        bulls, cows = get_feedback(secret_code, guess_player1)
+        print(f"Player 1's guess {guess_player1} has {bulls} bulls and {cows} cows.")
+
+if __name__ == "__main__":
+    main()
